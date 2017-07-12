@@ -2,17 +2,16 @@ const
   Koa = require('koa'),
   app = new Koa(),
   bodyParser = require('koa-bodyparser'),
-  proxy = require('koa-proxy');
+  proxy = require('koa-proxy'),
+  config = require('./config')();
 
-const PORT = 3000;
-const adminHost = 'http://localhost:3001';
 
 app.use(proxy({
-  host: adminHost,
+  host: config.ADMIN_SERVICE,
   match: /^\/admin\/?/
 }));
 
 app.use(require('./routes'));
 
 app.use(bodyParser());
-app.listen(PORT);
+app.listen(config.PORT);
